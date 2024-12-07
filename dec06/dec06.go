@@ -29,78 +29,79 @@ func task1(lines []string) int {
 	// fmt.Println("pos", pos, "dir", dir)
 	g.Grid[pos.r][pos.c] = dirChar(dir)
 	nrSteps := 0
-walk:
-	for {
-		r, c := pos.r+dir.r, pos.c+dir.c
-		if !g.InBounds(r, c) {
-			break walk
-		}
-		if g.At(r, c) == "#" {
-			// fmt.Println(g)
-			// fmt.Println()
-			dir = turnRight(dir)
-
-			continue walk
-		}
-		g.Grid[r][c] = dirChar(dir)
-		pos = Pos{r, c}
-		nrSteps++
-	}
-	count := 0
-	for r := 0; r < g.Height; r++ {
-		for c := 0; c < g.Width; c++ {
-			switch g.Grid[r][c] {
-			case "^", "v", "<", ">":
-				count++
-			}
-		}
-	}
-	fmt.Println("nrSteps", nrSteps)
-	// fmt.Println(g)
-	return count
-}
-
-func task2(lines []string) int {
-	g := u.CreateCharGridFromLines(lines)
-	// fmt.Printf("%s\n\n", g)
-	pos, dir := findStart(g)
-	startPos := pos
-	// fmt.Println("pos", pos, "dir", dir)
-	nrLoops := 0
-	nrSteps := 0
-	goodPos := make(map[Pos]bool)
+	pathPos := u.Set[Pos]{}
+	pathPos.Add(pos) // Add starting position
 	for {
 		r, c := pos.r+dir.r, pos.c+dir.c
 		if !g.InBounds(r, c) {
 			break
 		}
 		if g.At(r, c) == "#" {
-			// fmt.Println(g)
-			// fmt.Println()
 			dir = turnRight(dir)
 			continue
 		}
-		g2 := g.Copy()
-		if r == startPos.r && c == startPos.c {
-			fmt.Println("back at start pos")
-			os.Exit(1)
+		g.Grid[r][c] = dirChar(dir)
+		pos = Pos{r, c}
+		pathPos.Add(pos)
+		nrSteps++
+	}
+	fmt.Println("nrSteps", nrSteps)
+	fmt.Println("nrPos", len(pathPos))
+	return len(pathPos) // One extra for the starting position
+}
+
+func task2(lines []string) int {
+	g := u.CreateCharGridFromLines(lines)
+	// fmt.Printf("%s\n\n", g)
+	pos, dir := findStart(g)
+	nrSteps := 0
+	pathPos := u.Set[Pos]{}
+	for {
+		r, c := pos.r+dir.r, pos.c+dir.c
+		if !g.InBounds(r, c) {
+			break
+		}
+		if g.At(r, c) == "#" {
+			dir = turnRight(dir)
 			continue
-		}
-		if g.Grid[r][c] == "#" {
-			fmt.Println("bad state found")
-			os.Exit(2)
-		}
-		g2.Grid[r][c] = "O" // Insert obstacle
-		if checkLoop(g2, pos, dir) {
-			nrLoops++
-			goodPos[Pos{r, c}] = true
-			fmt.Println("nrLoops", nrLoops, "nrSteps", nrSteps, "nrObstacles", len(goodPos))
 		}
 		g.Grid[r][c] = dirChar(dir)
 		pos = Pos{r, c}
+		pathPos.Add(pos)
 		nrSteps++
 	}
-	return len(goodPos)
+	nrGoodBlocks := 0
+	for oPos := range pathPos {
+		g := u.CreateCharGridFromLines(lines)
+		pos, dir := findStart(g)
+		g.Grid[oPos.r][oPos.c] = "O" // Insert obstacle
+		nrSteps := 0
+		visited := u.Set[state]{}
+		visited.Add(state{pos, dir})
+		for {
+			r, c := pos.r+dir.r, pos.c+dir.c
+			if !g.InBounds(r, c) {
+				break
+			}
+			if g.At(r, c) == "#" || g.At(r, c) == "O" {
+				dir = turnRight(dir)
+				continue
+			}
+			pos = Pos{r, c}
+			g.Grid[r][c] = dirChar(dir)
+			if visited.Contains(state{pos, dir}) {
+				nrGoodBlocks++
+				break
+			}
+			visited.Add(state{pos, dir})
+			nrSteps++
+			if nrSteps > 10000 {
+				fmt.Println("nrSteps", nrSteps)
+				os.Exit(1)
+			}
+		}
+	}
+	return nrGoodBlocks
 }
 
 type state struct {
@@ -119,34 +120,6 @@ func dirChar(dir Pos) string {
 		return "<"
 	}
 	return "?"
-}
-
-func checkLoop(g u.CharGrid, pos, dir Pos) bool {
-	nrSteps := 0
-	visited := make(map[state]bool)
-	for {
-		if _, ok := visited[state{pos, dir}]; ok {
-			return true
-		}
-		r, c := pos.r+dir.r, pos.c+dir.c
-		if !g.InBounds(r, c) {
-			return false
-		}
-		visited[state{pos, dir}] = true
-		if g.At(r, c) == "O" || g.At(r, c) == "#" {
-			// fmt.Println(g)
-			// fmt.Println()
-			dir = turnRight(dir)
-			continue
-		}
-		pos = Pos{r, c}
-		if g.Grid[pos.r][pos.c] == "#" || g.Grid[pos.r][pos.c] == "O" {
-			fmt.Println("bad state found")
-		}
-		g.Grid[r][c] = dirChar(dir)
-		//fmt.Printf("%s\n", g)
-		nrSteps++
-	}
 }
 
 func findStart(g u.CharGrid) (pos, dir Pos) {
