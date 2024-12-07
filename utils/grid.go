@@ -176,6 +176,24 @@ func (g CharGrid) InBounds(y, x int) bool {
 	return 0 <= y && y < g.Height && 0 <= x && x < g.Width
 }
 
+func (g CharGrid) At(y, x int) string {
+	return g.Grid[y][x]
+}
+
+func (g CharGrid) Copy() CharGrid {
+	n := CharGrid{
+		Grid:   make([][]string, 0, g.Height),
+		Width:  g.Width,
+		Height: g.Height,
+	}
+	for r := 0; r < g.Height; r++ {
+		row := make([]string, g.Width)
+		copy(row, g.Grid[r])
+		n.Grid = append(n.Grid, row)
+	}
+	return n
+}
+
 func CreateZeroDigitGrid(width, height int) DigitGrid {
 	grid := DigitGrid{
 		Grid:   make([][]int, 0, height),
