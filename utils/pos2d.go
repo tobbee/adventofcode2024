@@ -29,3 +29,10 @@ func (p Pos2D) Left() Pos2D {
 func (p Pos2D) Right() Pos2D {
 	return Pos2D{p.Col, -p.Row}
 }
+
+// Dirs2D provides all right-angle directions down, right, up, left
+var Dirs2D = []Pos2D{{1, 0}, {0, 1}, {-1, 0}, {0, -1}}
+
+// Dirs2DAll provides all 8 directions
+var Dirs2DAll = []Pos2D{{1, 0}, {0, 1}, {-1, 0}, {0, -1},
+	{1, 1}, {1, -1}, {-1, 1}, {-1, -1}}
