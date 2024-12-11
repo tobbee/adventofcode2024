@@ -18,6 +18,10 @@ func main() {
 		panic(err)
 	}
 	dir := fmt.Sprintf("dec%02d", day)
+	if _, err := os.Stat(dir); !os.IsNotExist(err) {
+		fmt.Printf("Directory %s already exists\n", dir)
+		os.Exit(1)
+	}
 	err = os.MkdirAll(dir, 0o755)
 	if err != nil {
 		panic(err)
