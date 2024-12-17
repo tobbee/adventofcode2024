@@ -3,6 +3,7 @@ module github.com/tobbee/adventofcode2024
 go 1.22
 
 require (
+	github.com/Eyevinn/mp4ff v0.47.0
 	github.com/oriser/regroup v0.0.0-20230527212431-1b00c9bdbc5b
 	github.com/stretchr/testify v1.8.4
 )

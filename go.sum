@@ -1,5 +1,9 @@
+github.com/Eyevinn/mp4ff v0.47.0 h1:XSSHYt5+I0fyOnHWoNwM72DtivlmHFR0V9azgIi+ZVU=
+github.com/Eyevinn/mp4ff v0.47.0/go.mod h1:hJNUUqOBryLAzUW9wpCJyw2HaI+TCd2rUPhafoS5lgg=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/go-test/deep v1.1.0 h1:WOcxcdHcvdgThNXjw0t76K42FXTU7HpNQWHpA2HHNlg=
+github.com/go-test/deep v1.1.0/go.mod h1:5C2ZWiW0ErCdrYzpqxLbTX7MG14M9iiw8DgHncVwcsE=
 github.com/oriser/regroup v0.0.0-20230527212431-1b00c9bdbc5b h1:9L56kn3D7E9jd2R9U9p7tfzaBaLTVPt4HgnrP+g2VGk=
 github.com/oriser/regroup v0.0.0-20230527212431-1b00c9bdbc5b/go.mod h1:6eb1+OYHjOvThrtgEVue70NTfmzkalZgohRtndAUUbI=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
