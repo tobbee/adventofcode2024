@@ -36,3 +36,7 @@ var Dirs2D = []Pos2D{{1, 0}, {0, 1}, {-1, 0}, {0, -1}}
 // Dirs2DAll provides all 8 directions
 var Dirs2DAll = []Pos2D{{1, 0}, {0, 1}, {-1, 0}, {0, -1},
 	{1, 1}, {1, -1}, {-1, 1}, {-1, -1}}
+
+func (p Pos2D) Manhattan() int {
+	return Abs(p.Row) + Abs(p.Col)
+}
